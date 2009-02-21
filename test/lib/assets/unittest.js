@@ -1,3 +1,8 @@
+/**
+ * @fileOverview Unit test framework formerly used by prototype.js
+ * @see <a href="http://jsunittest.com/">JsUnitTest</a>
+ */
+
 // Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //           (c) 2005 Jon Tirsen (http://www.tirsen.com)
 //           (c) 2005 Michael Schuerig (http://www.schuerig.de/michael/)
@@ -21,163 +26,82 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-// experimental, Firefox-only
-Event.simulateMouse = function(element, eventName) {
-  var options = Object.extend({
-    pointerX: 0,
-    pointerY: 0,
-    buttons: 0
-  }, arguments[2] || {});
-  var oEvent = document.createEvent("MouseEvents");
-  oEvent.initMouseEvent(eventName, true, true, document.defaultView, 
-    options.buttons, options.pointerX, options.pointerY, options.pointerX, options.pointerY, 
-    false, false, false, false, 0, $(element));
-  
-  if(this.mark) Element.remove(this.mark);
-  
-  var style = 'position: absolute; width: 5px; height: 5px;' + 
-    'top: #{pointerY}px; left: #{pointerX}px;'.interpolate(options) + 
-    'border-top: 1px solid red; border-left: 1px solid red;'
-    
-  this.mark = new Element('div', { style: style });
-  this.mark.appendChild(document.createTextNode(" "));
-  document.body.appendChild(this.mark);
-  
-  if(this.step)
-    alert('['+new Date().getTime().toString()+'] '+eventName+'/'+Test.Unit.inspect(options));
-  
-  $(element).dispatchEvent(oEvent);
-};
-
-// Note: Due to a fix in Firefox 1.0.5/6 that probably fixed "too much", this doesn't work in 1.0.6 or DP2.
-// You need to downgrade to 1.0.4 for now to get this working
-// See https://bugzilla.mozilla.org/show_bug.cgi?id=289940 for the fix that fixed too much
-Event.simulateKey = function(element, eventName) {
-  var options = Object.extend({
-    ctrlKey: false,
-    altKey: false,
-    shiftKey: false,
-    metaKey: false,
-    keyCode: 0,
-    charCode: 0
-  }, arguments[2] || {});
-
-  var oEvent = document.createEvent("KeyEvents");
-  oEvent.initKeyEvent(eventName, true, true, window, 
-    options.ctrlKey, options.altKey, options.shiftKey, options.metaKey,
-    options.keyCode, options.charCode );
-  $(element).dispatchEvent(oEvent);
-};
-
-Event.simulateKeys = function(element, command) {
-  for(var i=0; i<command.length; i++) {
-    Event.simulateKey(element,'keypress',{charCode:command.charCodeAt(i)});
-  }
-};
-
+/** @namespace Test */
 var Test = {
+  /** @namespace Test.Unit */
   Unit: {
     inspect: Object.inspect // security exception workaround
   }
 };
 
-Test.Unit.Logger = Class.create({
+/** @class Test.Unit.Logger */
+Test.Unit.Logger = Class.create(
+{
   initialize: function(element) {
-    this.element = $(element);
-    if (this.element) this._createLogTable();
-    this.tbody = $(this.element.getElementsByTagName('tbody')[0]);
+    this.results = [];
+    this.currentResult = 0;
   },
   
   start: function(testName) {
-    if (!this.element) return;
-    this.tbody.insert('<tr><td>' + testName + '</td><td></td><td></td></tr>');
-  },
-  
-  setStatus: function(status) {
-    this.getLastLogLine().addClassName(status);
-    $(this.getLastLogLine().getElementsByTagName('td')[1]).update(status);
+    this.results[this.currentResult] = {};
+    this.results[this.currentResult].testName = testName;
   },
   
   finish: function(status, summary) {
-    if (!this.element) return;
-    this.setStatus(status);
-    this.message(summary);
+    this.results[this.currentResult].status = status 
+    this.results[this.currentResult].summary = summary 
+    var template = '<tr class="#{status}"><td>#{testName}</td><td>#{status}</td><td>#{summary}</td></tr>'
+    this.results[this.currentResult] = 
+      template.interpolate(this.results[this.currentResult]);
+    this.currentResult = this.currentResult + 1;
   },
   
   message: function(message) {
-    if (!this.element) return;
-    this.getMessageCell().update(this._toHTML(message));
+    this.results[this.currentResult].message =  message;
   },
   
   summary: function(summary) {
-    if (!this.element) return;
-    var div = $(this.element.getElementsByTagName('div')[0]);
-    div.update(this._toHTML(summary));
-  },
-  
-  getLastLogLine: function() {
-    //return this.element.descendants('tr').last();
-    var trs = this.element.getElementsByTagName('tr');
-    return $(trs[trs.length - 1]);
-  },
-  
-  getMessageCell: function() {
-    return this.getLastLogLine().down('td', 2);
-    var tds = this.getLastLogLine().getElementsByTagName('td');
-    return $(tds[2]);
+    this.logSummary = '<div class="logsummary">' + summary + '</div>';
   },
   
   _createLogTable: function() {
-    var html = '<div class="logsummary">running...</div>' +
-    '<table class="logtable">' +
+    return '<table class="logtable">' +
     '<thead><tr><th>Status</th><th>Test</th><th>Message</th></tr></thead>' +
-    '<tbody class="loglines"></tbody>' +
-    '</table>';
-    this.element.update(html);
-    
-  },
-  
-  appendActionButtons: function(actions) {
-    actions = $H(actions);
-    if (!actions.any()) return;
-    var div = new Element("div", {className: 'action_buttons'});
-    actions.inject(div, function(container, action) {
-      var button = new Element("input").setValue(action.key).observe("click", action.value);
-      button.type = "button";
-      return container.insert(button);
-    });
-    this.getMessageCell().insert(div);
+    '<tbody class="loglines">#{loglines}</tbody></table>';
   },
   
   _toHTML: function(txt) {
-    return txt.escapeHTML().replace(/\n/g,"<br />");
-  }
+    return txt.escapeHTML().replace(/\n/g,"<br/>");
+  },
+
+  /**
+   * public toHTML method for results output
+   */
+  toHTML : function () {
+   var c = {} // Content for template
+    var t = this.logSummary + this._createLogTable();
+    c.loglines = this.results.join("");
+    return t.interpolate(c);
+  } 
 });
 
-Test.Unit.Runner = Class.create({
+/** @namespace Test.Unit.Runner */
+Test.Unit.Runner = Class.create(
+{
   initialize: function(testcases) {
     var options = this.options = Object.extend({
       testLog: 'testlog'
     }, arguments[1] || {});
     
-    options.resultsURL = this.queryParams.resultsURL;
-    
     this.tests = this.getTests(testcases);
     this.currentTest = 0;
-
-    Event.observe(window, "load", function() {
-      this.logger = new Test.Unit.Logger($(options.testLog));
-      this.runTests.bind(this).delay(0.1);
-    }.bind(this));
+    this.logger = new Test.Unit.Logger(options.testLog);
+    this.runTests();
   },
-  
-  queryParams: window.location.search.parseQuery(),
   
   getTests: function(testcases) {
     var tests, options = this.options;
-    if (this.queryParams.tests) tests = this.queryParams.tests.split(',');
-    else if (options.tests) tests = options.tests;
+    if (options.tests) tests = options.tests;
     else if (options.test) tests = [option.test];
     else tests = Object.keys(testcases).grep(/^test/);
     
@@ -202,44 +126,39 @@ Test.Unit.Runner = Class.create({
       return results;
     });
   },
-  
-  postResults: function() {
-    if (this.options.resultsURL) {
-      new Ajax.Request(this.options.resultsURL, 
-        { method: 'get', parameters: this.getResult(), asynchronous: false });
-    }
-  },
-  
+
   runTests: function() {
     var test = this.tests[this.currentTest], actions;
     
     if (!test) return this.finish();
-    if (!test.isWaiting) this.logger.start(test.name);
+
+    this.logger.start(test.name);
     test.run();
-    if(test.isWaiting) {
-      this.logger.message("Waiting for " + test.timeToWait + "ms");
-      setTimeout(this.runTests.bind(this), test.timeToWait || 1000);
-      return;
-    }
-    
+
     this.logger.finish(test.status(), test.summary());
-    if (actions = test.actions) this.logger.appendActionButtons(actions);
     this.currentTest++;
     // tail recursive, hopefully the browser will skip the stackframe
     this.runTests();
   },
   
   finish: function() {
-    this.postResults();
     this.logger.summary(this.summary());
   },
   
   summary: function() {
     return '#{tests} tests, #{assertions} assertions, #{failures} failures, #{errors} errors'
       .interpolate(this.getResult());
+  },
+
+  /**
+   * Public method to return HTML results
+   */
+  toHTML : function () {
+    return this.logger.toHTML();
   }
 });
 
+/** @class Test.Unit.MessageTemplate */
 Test.Unit.MessageTemplate = Class.create({
   initialize: function(string) {
     var parts = [];
@@ -256,6 +175,7 @@ Test.Unit.MessageTemplate = Class.create({
   }
 });
 
+/** @namespace Test.Unit.Assertions */
 Test.Unit.Assertions = {
   buildMessage: function(message, template) {
     var args = $A(arguments).slice(2);
@@ -429,51 +349,10 @@ Test.Unit.Assertions = {
       message = this.buildMessage(message || 'assertNothingRaised', '<?> was thrown when nothing was expected.', e);
       this.flunk(message);
     }
-  },
-  
-  _isVisible: function(element) {
-    element = $(element);
-    if(!element.parentNode) return true;
-    this.assertNotNull(element);
-    if(element.style && Element.getStyle(element, 'display') == 'none')
-      return false;
-    
-    return arguments.callee.call(this, element.parentNode);
-  },
-  
-  assertVisible: function(element, message) {
-    message = this.buildMessage(message, '? was not visible.', element);
-    this.assertBlock(message, function() { return this._isVisible(element) });
-  },
-  
-  assertNotVisible: function(element, message) {
-    message = this.buildMessage(message, '? was not hidden and didn\'t have a hidden parent either.', element);
-    this.assertBlock(message, function() { return !this._isVisible(element) });
-  },
-  
-  assertElementsMatch: function() {
-    var message, pass = true, expressions = $A(arguments), elements = $A(expressions.shift());
-    if (elements.length != expressions.length) {
-      message = this.buildMessage('assertElementsMatch', 'size mismatch: ? elements, ? expressions (?).', elements.length, expressions.length, expressions);
-      this.flunk(message);
-      pass = false;
-    }
-    elements.zip(expressions).all(function(pair, index) {
-      var element = $(pair.first()), expression = pair.last();
-      if (element.match(expression)) return true;
-      message = this.buildMessage('assertElementsMatch', 'In index <?>: expected <?> but got ?', index, expression, element);
-      this.flunk(message);
-      pass = false;
-    }.bind(this))
-    
-    if (pass) this.assert(true, "Expected all elements to match.");
-  },
-  
-  assertElementMatches: function(element, expression, message) {
-    this.assertElementsMatch([element], expression);
   }
 };
 
+/** @class Test.Unit.TestCase */
 Test.Unit.Testcase = Class.create(Test.Unit.Assertions, {
   initialize: function(name, test, setup, teardown) {
     this.name           = name;
@@ -489,7 +368,7 @@ Test.Unit.Testcase = Class.create(Test.Unit.Assertions, {
   assertions: 0,
   failures:   0,
   errors:     0,
-  isRunningFromRake: window.location.port == 4711,
+  isRunningFromRake: false, 
   
   wait: function(time, nextPart) {
     this.isWaiting = true;
