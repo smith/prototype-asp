@@ -9,7 +9,7 @@ PROTOTYPE_TEST_DIR = File.join(PROTOTYPE_ROOT, 'test')
 PROTOTYPE_TMP_DIR  = File.join(PROTOTYPE_TEST_DIR, 'unit', 'tmp')
 PROTOTYPE_VERSION  = '1.6.0.3'
 
-task :default => [:dist, :dist_helper, :package, :clean_package_source]
+task :default => [:dist, :package, :clean_package_source]
 
 desc "Builds the distribution."
 task :dist do
@@ -35,34 +35,20 @@ Rake::PackageTask.new('prototype', PROTOTYPE_VERSION) do |package|
   )
 end
 
-desc "Builds the distribution and the test suite, runs the tests and collects their results."
-task :test => [:dist, :test_units]
+desc "Builds the distribution and the test suite"
+task :test => [:dist, :build_unit_tests]
 
 require 'test/lib/jstest'
-desc "Runs all the JavaScript unit tests and collects the results"
-JavaScriptTestTask.new(:test_units => [:build_unit_tests]) do |t|
-  testcases        = ENV['TESTCASES']
-  tests_to_run     = ENV['TESTS']    && ENV['TESTS'].split(',')
-  browsers_to_test = ENV['BROWSERS'] && ENV['BROWSERS'].split(',')
-  
-  t.mount("/dist")
-  t.mount("/test")
-  
-  Dir.mkdir(PROTOTYPE_TMP_DIR) unless File.exist?(PROTOTYPE_TMP_DIR)
-  
-  Dir["test/unit/tmp/*_test.html"].each do |file|
-    test_name = File.basename(file).sub("_test.html", "")
-    unless tests_to_run && !tests_to_run.include?(test_name)
-      t.run("/#{file}", testcases)
-    end
-  end
-  
-  %w( ie ).each do |browser|
-    t.browser(browser.to_sym) unless browsers_to_test && !browsers_to_test.include?(browser)
+
+# Override PageBuilder extension
+class PageBuilder
+  def destination
+    name_file(:ext => 'asp')
   end
 end
 
-task :build_unit_tests do
+task :build_unit_tests => [:clean_tmp] do
+  puts "Building tests"
   Dir[File.join('test', 'unit', '*_test.js')].each do |file|
     PageBuilder.new(file, 'prototype.erb').render
   end
