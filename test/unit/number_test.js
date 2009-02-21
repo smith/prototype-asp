@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   
   testNumberMathMethods: function() {
     this.assertEqual(1, (0.9).round());

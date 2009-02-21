@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   
   testInclude: function() {
     this.assert(!$R(0, 0, true).include(0));

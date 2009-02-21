@@ -6,7 +6,7 @@ var extendDefault = function(options) {
   }, options);
 };
 
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   setup: function() {
     $('content').update('');
     $('content2').update('');

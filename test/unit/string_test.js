@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testInterpret: function(){
     this.assertIdentical('true', String.interpret(true));
     this.assertIdentical('123',  String.interpret(123));
