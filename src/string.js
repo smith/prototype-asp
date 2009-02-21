@@ -206,7 +206,7 @@ Object.extend(String.prototype, {
   }
 });
 
-if (Prototype.Browser.WebKit || Prototype.Browser.IE) Object.extend(String.prototype, {
+Object.extend(String.prototype, {
   escapeHTML: function() {
     return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   },
@@ -222,13 +222,6 @@ String.prototype.gsub.prepareReplacement = function(replacement) {
 };
 
 String.prototype.parseQuery = String.prototype.toQueryParams;
-
-Object.extend(String.prototype.escapeHTML, {
-  div:  document.createElement('div'),
-  text: document.createTextNode('')
-});
-
-String.prototype.escapeHTML.div.appendChild(String.prototype.escapeHTML.text);
 
 var Template = Class.create({
   initialize: function(template, pattern) {
