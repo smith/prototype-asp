@@ -132,7 +132,7 @@ var testResults = new Test.Unit.Runner({
     this.assertEqual('null', Object.inspect(null));
     this.assertEqual("'foo\\\\b\\\'ar'", Object.inspect('foo\\b\'ar'));
     this.assertEqual('[]', Object.inspect([]));
-    this.assertNothingRaised(function() { Object.inspect(window.Node) });
+    //this.assertNothingRaised(function() { Object.inspect(window.Node) });
   },
   
   testObjectToJSON: function() {
@@ -156,10 +156,10 @@ var testResults = new Test.Unit.Runner({
     var sam = new Person('sam');
     this.assertEqual('-sam', Object.toJSON(sam));
     this.assertEqual('-sam', sam.toJSON());
-    var element = $('test');
-    this.assertUndefined(Object.toJSON(element));
-    element.toJSON = function(){return 'I\'m a div with id test'};
-    this.assertEqual('I\'m a div with id test', Object.toJSON(element));
+    //var element = $('test');
+    //this.assertUndefined(Object.toJSON(element));
+    //element.toJSON = function(){return 'I\'m a div with id test'};
+    //this.assertEqual('I\'m a div with id test', Object.toJSON(element));
   },
   
   testObjectToHTML: function() {
@@ -177,7 +177,7 @@ var testResults = new Test.Unit.Runner({
     this.assert(Object.isArray([0]));
     this.assert(Object.isArray([0, 1]));
     this.assert(!Object.isArray({}));
-    this.assert(!Object.isArray($('list').childNodes));
+    //this.assert(!Object.isArray($('list').childNodes));
     this.assert(!Object.isArray());
     this.assert(!Object.isArray(''));
     this.assert(!Object.isArray('foo'));
@@ -220,7 +220,7 @@ var testResults = new Test.Unit.Runner({
     this.assert(Object.isFunction(function() { }));
     this.assert(Object.isFunction(Class.create()));
     this.assert(!Object.isFunction("a string"));
-    this.assert(!Object.isFunction($("testlog")));
+    //this.assert(!Object.isFunction($("testlog")));
     this.assert(!Object.isFunction([]));
     this.assert(!Object.isFunction({}));
     this.assert(!Object.isFunction(0));
@@ -348,7 +348,7 @@ var testResults = new Test.Unit.Runner({
       RegExp.escape('/([.*+?^=!:${}()|[\\]\\/\\\\])/g')
     );
   },
-  
+/*
   testBrowserDetection: function() {
     var results = $H(Prototype.Browser).map(function(engine){
       return engine;
@@ -390,7 +390,7 @@ var testResults = new Test.Unit.Runner({
       this.assert(Prototype.Browser.Gecko);
     } 
   },
-  
+*/
   testClassCreate: function() { 
     this.assert(Object.isFunction(Animal), 'Animal is not a constructor');
     this.assertEnumEqual([Cat, Mouse, Dog, Ox], Animal.subclasses);
