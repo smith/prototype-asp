@@ -6,21 +6,6 @@ function $A(iterable) {
   return results;
 }
 
-if (Prototype.Browser.WebKit) {
-  $A = function(iterable) {
-    if (!iterable) return [];    
-    // In Safari, only use the `toArray` method if it's not a NodeList.
-    // A NodeList is a function, has an function `item` property, and a numeric
-    // `length` property. Adapted from Google Doctype.
-    if (!(typeof iterable === 'function' && typeof iterable.length ===
-        'number' && typeof iterable.item === 'function') && iterable.toArray)
-      return iterable.toArray();
-    var length = iterable.length || 0, results = new Array(length);
-    while (length--) results[length] = iterable[length];
-    return results;
-  };
-}
-
 Array.from = $A;
 
 Object.extend(Array.prototype, Enumerable);
@@ -137,18 +122,3 @@ function $w(string) {
   return string ? string.split(/\s+/) : [];
 }
 
-if (Prototype.Browser.Opera){
-  Array.prototype.concat = function() {
-    var array = [];
-    for (var i = 0, length = this.length; i < length; i++) array.push(this[i]);
-    for (var i = 0, length = arguments.length; i < length; i++) {
-      if (Object.isArray(arguments[i])) {
-        for (var j = 0, arrayLength = arguments[i].length; j < arrayLength; j++) 
-          array.push(arguments[i][j]);
-      } else { 
-        array.push(arguments[i]);
-      }
-    }
-    return array;
-  };
-}
