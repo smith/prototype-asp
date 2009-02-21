@@ -23,18 +23,6 @@ task :dist do
   end
 end
 
-desc "Builds the updating helper."
-task :dist_helper do
-  $:.unshift File.join(PROTOTYPE_ROOT, 'lib')
-  require 'protodoc'
-  
-  Dir.chdir(File.join(PROTOTYPE_ROOT, 'ext', 'update_helper')) do
-    File.open(File.join(PROTOTYPE_DIST_DIR, 'prototype_update_helper.js'), 'w+') do |dist|
-      dist << Protodoc::Preprocessor.new('prototype_update_helper.js')
-    end
-  end
-end
-
 Rake::PackageTask.new('prototype', PROTOTYPE_VERSION) do |package|
   package.need_tar_gz = true
   package.package_dir = PROTOTYPE_PKG_DIR
@@ -69,7 +57,7 @@ JavaScriptTestTask.new(:test_units => [:build_unit_tests]) do |t|
     end
   end
   
-  %w( safari firefox ie konqueror opera chrome ).each do |browser|
+  %w( ie ).each do |browser|
     t.browser(browser.to_sym) unless browsers_to_test && !browsers_to_test.include?(browser)
   end
 end
