@@ -14,4 +14,3 @@ var Prototype = {
 
 <%= include 'enumerable.js', 'array.js', 'number.js', 'hash.js', 'range.js' %>
 
-<%= include 'ajax.js' %>
