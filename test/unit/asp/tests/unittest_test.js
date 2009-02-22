@@ -8,7 +8,7 @@ var testObj = {
 }
 
 var testResults = new Test.Unit.Runner({
-  
+/*  
   testIsRunningFromRake:  function() {
     if (window.location.toString().startsWith('http')) {
       this.assert(this.isRunningFromRake);
@@ -18,7 +18,7 @@ var testResults = new Test.Unit.Runner({
       this.info('These tests are *not* running from rake.')
     }
   },
-
+*/
   testBuildMessage:  function() {
     this.assertEqual("'foo' 'bar'", this.buildMessage('', '? ?', 'foo', 'bar'))
   },
@@ -111,8 +111,8 @@ var testResults = new Test.Unit.Runner({
     this.assertInstanceOf(String, new String);
     this.assertInstanceOf(RegExp, /foo/);
     this.assertNotInstanceOf(String, {});
-  },
-  
+  }/*,
+
   testAssertVisible: function() {
     this.assertVisible('testcss1');
     this.assertNotVisible('testcss1_span');
@@ -135,14 +135,16 @@ var testResults = new Test.Unit.Runner({
     this.assertElementsMatch($$('#tlist'), '#tlist');   
     this.assertElementMatches($('tlist'), '#tlist');   
   }
+*/
 });
 
-new Test.Unit.Runner({
+var testResults2 = new Test.Unit.Runner({
   testDummy: function() {
     this.assert(true);
-  },
+  }/*,
   
   testMultipleTestRunner: function() {
     this.assertEqual('passed', $('testlog_2').down('td', 1).innerHTML);
   }
+*/
 }, {testLog: 'testlog_2'});

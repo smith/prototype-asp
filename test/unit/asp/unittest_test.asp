@@ -15,7 +15,7 @@
 
 <div id="testlog"><%= testResults.toHTML() %></div>
 
-<div id="testlog_2"> </div>
+<div id="testlog_2"><%= testResults2.toHTML() %></div>
 
 <!-- Test elements follow -->
 <div id="test_1" class="a bbbbbbbbbbbb cccccccccc dddd"> </div>
