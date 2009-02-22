@@ -494,7 +494,8 @@ var testResults = new Test.Unit.Runner({
     var dangerous = '{});attackTarget = "attack succeeded!";({}';
 
     // use smaller huge string size for KHTML
-    var size = navigator.userAgent.include('KHTML') ? 20 : 100;
+    //var size = navigator.userAgent.include('KHTML') ? 20 : 100;
+    var size = 100;
     var longString = '"' + '123456789\\"'.times(size * 10) + '"';
     var object = '{' + longString + ': ' + longString + '},';
     var huge = '[' + object.times(size) + '{"test": 123}]';
