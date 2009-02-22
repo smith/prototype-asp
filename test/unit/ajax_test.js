@@ -46,60 +46,6 @@ var testResults = new Test.Unit.Runner({
     });
   },
   
-  testUpdater: function() {
-    this.assertEqual("", $("content").innerHTML);
-    
-    new Ajax.Updater("content", "../fixtures/content.html", { method:'get' });
-    
-    this.wait(1000, function() {
-      this.assertEqual(sentence, $("content").innerHTML.strip().toLowerCase());
-      
-      $('content').update('');
-      this.assertEqual("", $("content").innerHTML);
-       
-      new Ajax.Updater({ success:"content", failure:"content2" },
-        "../fixtures/content.html", { method:'get', parameters:{ pet:'monkey' } });
-      
-      new Ajax.Updater("", "../fixtures/content.html", { method:'get', parameters:"pet=monkey" });
-      
-      this.wait(1000, function() {
-        this.assertEqual(sentence, $("content").innerHTML.strip().toLowerCase());
-        this.assertEqual("", $("content2").innerHTML);
-      });
-    }); 
-  },
-  
-  testUpdaterWithInsertion: function() {
-    $('content').update();
-    new Ajax.Updater("content", "../fixtures/content.html", { method:'get', insertion: Insertion.Top });
-    this.wait(1000, function() {
-      this.assertEqual(sentence, $("content").innerHTML.strip().toLowerCase());
-      $('content').update();
-      new Ajax.Updater("content", "../fixtures/content.html", { method:'get', insertion: 'bottom' });      
-      this.wait(1000, function() {
-        this.assertEqual(sentence, $("content").innerHTML.strip().toLowerCase());
-        
-        $('content').update();
-        new Ajax.Updater("content", "../fixtures/content.html", { method:'get', insertion: 'after' });      
-        this.wait(1000, function() {
-          this.assertEqual('five dozen', $("content").next().innerHTML.strip().toLowerCase());
-        });
-      });
-    });
-  },
-  
-  testUpdaterOptions: function() {
-    var options = {
-      method: 'get',
-      asynchronous: false,
-      evalJS: 'force',
-      onComplete: Prototype.emptyFunction
-    }
-    var request = new Ajax.Updater("content", "../fixtures/hello.js", options);
-    request.options.onComplete = function() {};
-    this.assertIdentical(Prototype.emptyFunction, options.onComplete);
-  },
-  
   testResponders: function(){
     // check for internal responder
     this.assertEqual(1, Ajax.Responders.responders.length);
