@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testRegExpEscape: function() {
     this.assertEqual('word', RegExp.escape('word'));
     this.assertEqual('\\/slashes\\/', RegExp.escape('/slashes/'));

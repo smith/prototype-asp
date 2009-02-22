@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testSet: function() {
     var h = $H({a: 'A'})
 

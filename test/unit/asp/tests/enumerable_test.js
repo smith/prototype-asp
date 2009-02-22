@@ -4,7 +4,7 @@ function prime(value) {
   return true;
 }
 
-new Test.Unit.Runner({    
+var testResults = new Test.Unit.Runner({    
   testEachBreak: function() {
     var result = 0;
     Fixtures.Basic.each(function(value) {

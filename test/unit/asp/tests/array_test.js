@@ -1,6 +1,6 @@
 var globalArgsTest = 'nothing to see here';
 
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   test$A: function(){
     this.assertEnumEqual([], $A({}));
   },

@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testObjectExtend: function() {
     var object = {foo: 'foo', bar: [1, 2, 3]};
     this.assertIdentical(object, Object.extend(object));

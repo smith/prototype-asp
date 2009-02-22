@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testBrowserDetection: function() {
     var results = $H(Prototype.Browser).map(function(engine){
       return engine;

@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testFunctionArgumentNames: function() {
     this.assertEnumEqual([], (function() {}).argumentNames());
     this.assertEnumEqual(["one"], (function(one) {}).argumentNames());
