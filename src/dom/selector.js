@@ -122,9 +122,11 @@ var Selector = Class.create({
         // Add an explicit context to the selector if necessary.
         if (root !== document) {
           var oldId = root.id, id = $(root).identify();
+          // Escape special characters in the ID.
+          id = id.replace(/[\.:]/g, "\\$0");
           e = "#" + id + " " + e;
         }
-
+        
         results = $A(root.querySelectorAll(e)).map(Element.extend);
         root.id = oldId;
 
@@ -682,8 +684,6 @@ Object.extend(Selector, {
     '^=': function(nv, v) { return nv == v || nv && nv.startsWith(v); },
     '$=': function(nv, v) { return nv == v || nv && nv.endsWith(v); },
     '*=': function(nv, v) { return nv == v || nv && nv.include(v); },
-    '$=': function(nv, v) { return nv.endsWith(v); },
-    '*=': function(nv, v) { return nv.include(v); },
     '~=': function(nv, v) { return (' ' + nv + ' ').include(' ' + v + ' '); },
     '|=': function(nv, v) { return ('-' + (nv || "").toUpperCase() +
      '-').include('-' + (v || "").toUpperCase() + '-'); }
