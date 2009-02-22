@@ -53,7 +53,7 @@ var testResults = new Test.Unit.Runner({
     this.assertEnumEqual(split(":", "0:1:2:3:4:5"), splitOnColons("0:1:2:3:4:5"));
     this.assertIdentical(split, split.curry());
   },
-
+/*
   testFunctionDelay: function() {
     window.delayed = undefined;
     var delayedFunction = function() { window.delayed = true; };
@@ -66,7 +66,7 @@ var testResults = new Test.Unit.Runner({
       this.assertEqual('hello world', window.delayedWithArgs);
     });
   },
-
+*/
   testFunctionWrap: function() {
     function sayHello(){
       return 'hello world';
@@ -88,7 +88,7 @@ var testResults = new Test.Unit.Runner({
     this.assertEqual('Hello', 'hello'.capitalize());
     String.prototype.capitalize = temp;
   },
-
+/*
   testFunctionDefer: function() {
     window.deferred = undefined;
     var deferredFunction = function() { window.deferred = true; };
@@ -105,7 +105,7 @@ var testResults = new Test.Unit.Runner({
       });
     });
   },
-
+*/
   testFunctionMethodize: function() {
     var Foo = { bar: function(baz) { return baz } };
     var baz = { quux: Foo.bar.methodize() };
@@ -113,7 +113,7 @@ var testResults = new Test.Unit.Runner({
     this.assertEqual(Foo.bar.methodize(), baz.quux);
     this.assertEqual(baz, Foo.bar(baz));
     this.assertEqual(baz, baz.quux());
-  },
+  }/*,
 
   testBindAsEventListener: function() {
     for( var i = 0; i < 10; ++i ){
@@ -130,4 +130,5 @@ var testResults = new Test.Unit.Runner({
       call(eventTest);
     }
   }
+*/
 });
