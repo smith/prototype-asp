@@ -73,7 +73,6 @@
 
     if (object === null) return 'null';
     if (object.toJSON) return object.toJSON();
-    if (isElement(object)) return;
 
     var results = [];
     for (var property in object) {
@@ -175,16 +174,6 @@
   }
 
   /**
-   *  Object.isElement(object) -> Boolean
-   *  - object (Object): The object to test.
-   *
-   *  Returns `true` if `object` is a DOM node of type 1; `false` otherwise.
-  **/
-  function isElement(object) {
-    return !!(object && object.nodeType == 1);
-  }
-
-  /**
    *  Object.isArray(object) -> Boolean
    *  - object (Object): The object to test.
    *
@@ -255,7 +244,6 @@
     keys:          keys,
     values:        values,
     clone:         clone,
-    isElement:     isElement,
     isArray:       isArray,
     isHash:        isHash,
     isFunction:    isFunction,
