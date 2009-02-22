@@ -16,7 +16,8 @@ var testResults = new Test.Unit.Runner({
     toArrayOnArguments('foo','bar');
     this.assertEnumEqual(['foo','bar'], globalArgsTest);
   },
-  
+
+/*
   testToArrayOnNodeList: function(){
     // direct HTML
     this.assertEqual(3, $A($('test_node').childNodes).length);
@@ -32,7 +33,7 @@ var testResults = new Test.Unit.Runner({
     $(element).update('22<span></span><span></span');
     this.assertEqual(3, $A(element.childNodes).length);
   },
-  
+*/
   testClear: function(){
     this.assertEnumEqual([], [].clear());
     this.assertEnumEqual([], [1].clear());

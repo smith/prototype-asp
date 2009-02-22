@@ -133,9 +133,10 @@ var testResults = new Test.Unit.Runner({
       Fixtures.Nicknames.grep(/o/, function(nickname) {
         return nickname.toUpperCase();
       }).join(", "))
-
+/*
     this.assertEnumEqual($('grepHeader', 'grepCell'),
       $('grepTable', 'grepTBody', 'grepRow', 'grepHeader', 'grepCell').grep(new Selector('.cell')));
+*/
   },
   
   testInclude: function() {
