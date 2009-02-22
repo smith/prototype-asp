@@ -4,16 +4,16 @@
 <head>
   <title>Unit test file | Object | default template | 2009-02-22 11:18</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <script src="assets/prototype.js" type="text/javascript" charset="utf-8"></script>
-<script src="assets/unittest.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../dist/prototype.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
+<script src="assets/unittest.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
 <link rel="stylesheet" href="assets/unittest.css" type="text/css" />
   
-  <script src="fixtures/object.js" type="text/javascript" charset="utf-8"></script>
-  <script src="tests/object_test.js" type="text/javascript" charset="utf-8"></script>
+  <script src="fixtures/object.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
+  <script src="tests/object_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
 </head>
 <body>
 
-<div id="testlog"></div>
+<div id="testlog"><%= testResults.toHTML() %></div>
 
 <div id="test"></div>
 <ul id="list">
