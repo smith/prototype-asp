@@ -173,13 +173,6 @@ Object.extend(Function.prototype, {
     }
   },
   
-  bindAsEventListener: function() {
-    var __method = this, args = $A(arguments), object = args.shift();
-    return function(event) {
-      return __method.apply(object, [event || window.event].concat(args));
-    }
-  },
-  
   curry: function() {
     if (!arguments.length) return this;
     var __method = this, args = $A(arguments);
@@ -188,18 +181,6 @@ Object.extend(Function.prototype, {
     }
   },
 
-  delay: function() { 
-    var __method = this, args = $A(arguments), timeout = args.shift() * 1000; 
-    return window.setTimeout(function() {
-      return __method.apply(__method, args);
-    }, timeout);
-  },
-  
-  defer: function() {
-    var args = [0.01].concat($A(arguments));
-    return this.delay.apply(this, args);
-  },
-  
   wrap: function(wrapper) {
     var __method = this;
     return function() {
@@ -247,39 +228,3 @@ RegExp.escape = function(str) {
   return String(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 };
 
-/*--------------------------------------------------------------------------*/
-
-var PeriodicalExecuter = Class.create({
-  initialize: function(callback, frequency) {
-    this.callback = callback;
-    this.frequency = frequency;
-    this.currentlyExecuting = false;
-
-    this.registerCallback();
-  },
-
-  registerCallback: function() {
-    this.timer = setInterval(this.onTimerEvent.bind(this), this.frequency * 1000);
-  },
-
-  execute: function() {
-    this.callback(this);
-  },
-  
-  stop: function() {
-    if (!this.timer) return;
-    clearInterval(this.timer);
-    this.timer = null;
-  },
-
-  onTimerEvent: function() {
-    if (!this.currentlyExecuting) {
-      try {
-        this.currentlyExecuting = true;
-        this.execute();
-      } finally {
-        this.currentlyExecuting = false;
-      }
-    }
-  }
-});
