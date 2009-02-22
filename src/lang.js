@@ -36,7 +36,6 @@ var Try = {
 //= require "lang/function"
 //= require "lang/date"
 //= require "lang/regexp"
-//= require "lang/periodical_executer"
 //= require "lang/string"
 //= require "lang/template"
 //= require "lang/enumerable"

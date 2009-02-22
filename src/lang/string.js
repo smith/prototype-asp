@@ -426,7 +426,7 @@ Object.extend(String.prototype, (function() {
   };
 })());
 
-if (Prototype.Browser.WebKit || Prototype.Browser.IE) Object.extend(String.prototype, {
+Object.extend(String.prototype, {
   escapeHTML: function() {
     return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   },
@@ -434,11 +434,4 @@ if (Prototype.Browser.WebKit || Prototype.Browser.IE) Object.extend(String.proto
     return this.stripTags().replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
   }
 });
-
-Object.extend(String.prototype.escapeHTML, {
-  div:  document.createElement('div'),
-  text: document.createTextNode('')
-});
-
-String.prototype.escapeHTML.div.appendChild(String.prototype.escapeHTML.text);
 

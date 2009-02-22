@@ -14,21 +14,6 @@ function $A(iterable) {
   return results;
 }
 
-if (Prototype.Browser.WebKit) {
-  $A = function(iterable) {
-    if (!iterable) return [];    
-    // In Safari, only use the `toArray` method if it's not a NodeList.
-    // A NodeList is a function, has an function `item` property, and a numeric
-    // `length` property. Adapted from Google Doctype.
-    if (!(typeof iterable === 'function' && typeof iterable.length ===
-        'number' && typeof iterable.item === 'function') && iterable.toArray)
-      return iterable.toArray();
-    var length = iterable.length || 0, results = new Array(length);
-    while (length--) results[length] = iterable[length];
-    return results;
-  };
-}
-
 /** section: lang
  *  $w(string) -> Array
  *  - string (String): A string with zero or more spaces.
