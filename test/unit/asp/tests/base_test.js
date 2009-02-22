@@ -1,4 +1,5 @@
 var testResults = new Test.Unit.Runner({
+/*
   testBrowserDetection: function() {
     var results = $H(Prototype.Browser).map(function(engine){
       return engine;
@@ -40,4 +41,5 @@ var testResults = new Test.Unit.Runner({
       this.assert(Prototype.Browser.Gecko);
     } 
   }  
+*/
 });
