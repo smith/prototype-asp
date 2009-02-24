@@ -5,7 +5,7 @@ Object.extend(String, {
   /**
    *  String.interpret(value) -> String
    *
-   *  TODO: String.interpret
+   *  Coerces `value` into a string. Returns an empty string for `null`.
   **/
   interpret: function(value) {
     return value == null ? '' : String(value);
@@ -38,6 +38,9 @@ Object.extend(String.prototype, (function() {
   function gsub(pattern, replacement) {
     var result = '', source = this, match;
     replacement = prepareReplacement(replacement);
+    
+    if (Object.isString(pattern))
+      pattern = RegExp.escape(pattern);
 
     if (!(pattern.length || pattern.source)) {
       replacement = replacement('');
@@ -431,7 +434,7 @@ Object.extend(String.prototype, {
     return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   },
   unescapeHTML: function() {
-    return this.stripTags().replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+    return this.stripTags().replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
   }
 });
 

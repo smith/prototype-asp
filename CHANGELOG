@@ -1,3 +1,15 @@
+* Make sure `getAttribute` is used without flag when accessing the "type" attribute of an iframe (IE throws error otherwise). [#118 state:resolved] (Zekid, kangax)
+
+* String#gsub should escape RegExp metacharacters when the first argument is a string. [#469 state:resolved] (michael, kangax)
+
+* Fix order of replacement in String#unescapeHTML [#544 state:resolved] (SWeini, kangax)
+
+* Fix issue where a Selector query rooted on a node that had not been attached to the document failed in IE. [#464 state:resolved] (jddalton, kangax, Douglas Fraser, Andrew Dupont)
+
+* Fix Selector to match elements with attributes containing hyphens. [#285 state:resolved] (leiyou, jddalton, kangax)
+
+* Make sure Form.reset always returns a reference to the receiver element. [#309 state:resolved] (Phil, kangax)
+
 * Escape ":" and "." characters when doing contextual CSS selection in browsers that support querySelectorAll. [#559 state:resolved] (fxtentacle, Andrew Dupont)
 
 * Ensure the `target` property on events is never undefined in IE. [#383 state:resolved] (Mathias Karstädt, Diego Perini, Andrew Dupont)
