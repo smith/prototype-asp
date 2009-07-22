@@ -103,7 +103,6 @@ Object.extend(Function.prototype, (function() {
   return {
     argumentNames:       argumentNames,
     bind:                bind,
-    bindAsEventListener: bindAsEventListener,
     curry:               curry,
     wrap:                wrap,
     methodize:           methodize

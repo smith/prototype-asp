@@ -21,4 +21,3 @@ var Prototype = {
 };
 
 //= require "lang"
-//= require "ajax"

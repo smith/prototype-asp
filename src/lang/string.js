@@ -165,30 +165,6 @@ Object.extend(String.prototype, (function() {
   }
 
   /**
-   *  String#escapeHTML() -> String
-   *
-   *  Converts HTML special characters to their entity equivalents.
-  **/
-  function escapeHTML() {
-    escapeHTML.text.data = this;
-    return escapeHTML.div.innerHTML;
-  }
-
-  /** related to: String#escapeHTML
-   *  String#unescapeHTML() -> String
-   *
-   *  Strips tags and converts the entity forms of special HTML characters
-   *  to their normal form.
-  **/
-  function unescapeHTML() {
-    var div = document.createElement('div');
-    div.innerHTML = this.stripTags();
-    return div.childNodes[0] ? (div.childNodes.length > 1 ?
-      $A(div.childNodes).inject('', function(memo, node) { return memo+node.nodeValue }) :
-      div.childNodes[0].nodeValue) : '';
-  }
-
-  /**
    *  String#parseQuery([separator = '&']) -> Object
   **/
 
@@ -444,8 +420,6 @@ Object.extend(String.prototype, (function() {
     stripScripts:   stripScripts,
     extractScripts: extractScripts,
     evalScripts:    evalScripts,
-    escapeHTML:     escapeHTML,
-    unescapeHTML:   unescapeHTML,
     toQueryParams:  toQueryParams,
     parseQuery:     toQueryParams,
     toArray:        toArray,
@@ -469,21 +443,21 @@ Object.extend(String.prototype, (function() {
   };
 })());
 
-Object.extend(String.prototype.escapeHTML, {
-  div:  document.createElement('div'),
-  text: document.createTextNode('')
-});
+/**
+*  String#escapeHTML() -> String
+*
+*  Converts HTML special characters to their entity equivalents.
+**/
+String.prototype.escapeHTML = function() {
+  return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+};
 
-String.prototype.escapeHTML.div.appendChild(String.prototype.escapeHTML.text);
-
-if ('<\n>'.escapeHTML() !== '&lt;\n&gt;') {
-  String.prototype.escapeHTML = function() {
-    return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  };
-}
-
-if ('&lt;\n&gt;'.unescapeHTML() !== '<\n>') {
-  String.prototype.unescapeHTML = function() {
-    return this.stripTags().replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
-  };
-}
+/** related to: String#escapeHTML
+*  String#unescapeHTML() -> String
+*
+*  Strips tags and converts the entity forms of special HTML characters
+*  to their normal form.
+**/
+String.prototype.unescapeHTML = function() {
+  return this.stripTags().replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+};
