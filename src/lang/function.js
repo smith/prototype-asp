@@ -47,22 +47,6 @@ Object.extend(Function.prototype, (function() {
     }
   }
 
-  /** related to: Function#bind
-   *  Function#bindAsEventListener(object[, args...]) -> Function
-   *  - object (Object): The object to bind to.
-   *
-   *  An event-specific variant of [[Function#bind]] which ensures the function
-   *  will recieve the current event object as the first argument when
-   *  executing.
-  **/
-  function bindAsEventListener(context) {
-    var __method = this, args = slice.call(arguments, 1);
-    return function(event) {
-      var a = update([event || window.event], args);
-      return __method.apply(context, a);
-    }
-  }
-
   /**
    *  Function#curry(args...) -> Function
    *  Partially applies the function, returning a function with one or more
@@ -79,43 +63,6 @@ Object.extend(Function.prototype, (function() {
       var a = merge(args, arguments);
       return __method.apply(this, a);
     }
-  }
-
-  /**
-   *  Function#delay(seconds[, args...]) -> Number
-   *  - seconds (Number): How long to wait before calling the function.
-   *
-   *  Schedules the function to run after the specified amount of time, passing
-   *  any arguments given.
-   *
-   *  Behaves much like `window.setTimeout`. Returns an integer ID that can be
-   *  used to clear the timeout with `window.clearTimeout` before it runs.
-   *
-   *  To schedule a function to run as soon as the interpreter is idle, use
-   *  [[Function#defer]].
-  **/
-  function delay(timeout) {
-    var __method = this, args = slice.call(arguments, 1);
-    timeout = timeout * 1000
-    return window.setTimeout(function() {
-      return __method.apply(__method, args);
-    }, timeout);
-  }
-
-  /**
-   *  Function#defer(args...) -> Number
-   *  Schedules the function to run as soon as the interpreter is idle.
-   *
-   *  A "deferred" function will not run immediately; rather, it will run as soon
-   *  as the interpreter's call stack is empty.
-   *
-   *  Behaves much like `window.setTimeout` with a delay set to `0`. Returns an
-   *  ID that can be used to clear the timeout with `window.clearTimeout` before
-   *  it runs.
-  **/
-  function defer() {
-    var args = update([0.01], arguments);
-    return this.delay.apply(this, args);
   }
 
   /**
@@ -158,8 +105,6 @@ Object.extend(Function.prototype, (function() {
     bind:                bind,
     bindAsEventListener: bindAsEventListener,
     curry:               curry,
-    delay:               delay,
-    defer:               defer,
     wrap:                wrap,
     methodize:           methodize
   }

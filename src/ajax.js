@@ -112,5 +112,3 @@
 //= require "ajax/base"
 //= require "ajax/request"
 //= require "ajax/response"
-//= require "ajax/updater"
-//= require "ajax/periodical_updater"
