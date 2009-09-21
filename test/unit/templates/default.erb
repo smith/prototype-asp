@@ -4,6 +4,7 @@
 <head>
   <title>Unit test file | <%= title %> | <%= template_name %> template | <%= timestamp %></title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<<<<<<< HEAD:test/unit/templates/default.erb
   <script type="text/javascript" charset="utf-8">
     var eventResults = {};
     var originalElement = window.Element;
@@ -11,6 +12,9 @@
   <%= script_tag('assets/prototype.js') %>
   <%= script_tag('lib_assets/unittest.js') %>
   <%= link_tag('lib_assets/unittest.css') %>
+=======
+  <%= lib_files %>
+>>>>>>> 3dcaea16e0cd19be0c1e6e8449e3ee832705bb3a:test/unit/templates/default.erb
   <%= css_fixtures %>
   <%= js_fixtures %>
   <%= test_file %>
@@ -22,6 +26,3 @@
 <%= html_fixtures %>
 </body>
 </html>
-<script type="text/javascript" charset="utf-8">
-  eventResults.endOfDocument = true;
-</script>
