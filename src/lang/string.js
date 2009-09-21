@@ -126,6 +126,15 @@ Object.extend(String.prototype, (function() {
    *  Note that `stripTags` will only strip HTML 4.01 tags &mdash; like `div`,
    *  `span`, and `abbr`. It _will not_ strip namespace-prefixed tags such
    *  as `h:table` or `xsl:template`.
+   *
+   *  <h5>Caveat User</h5>
+   *
+   *  Note that the processing `stripTags` does is good enough for most purposes, but
+   *  you cannot rely on it for security purposes. If you're processing end-user-supplied
+   *  content, `stripTags` is probably _not_ sufficiently robust to ensure that the content
+   *  is completely devoid of HTML tags in the case of a user intentionally trying to circumvent
+   *  tag restrictions. But then, you'll be running them through [[String#escapeHTML]] anyway,
+   *  won't you?
   **/
   function stripTags() {
     return this.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi, '');
@@ -134,7 +143,18 @@ Object.extend(String.prototype, (function() {
   /**
    *  String#stripScripts() -> String
    *
-   *  Strips a string of anything that looks like an HTML script block.
+   *  Strips a string of things that look like an HTML script blocks.
+   *
+   *  <h5>Example</h5>
+   *
+   *      "<p>This is a test.<script>alert("Look, a test!");</script>End of test</p>".stripScripts();
+   *      // => "<p>This is a test.End of test</p>"
+   *
+   *  <h5>Caveat User</h5>
+   *
+   *  Note that the processing `stripScripts` does is good enough for most purposes,
+   *  but you cannot rely on it for security purposes. If you're processing end-user-supplied
+   *  content, `stripScripts` is probably not sufficiently robust to prevent hack attacks.
   **/
   function stripScripts() {
     return this.replace(new RegExp(Prototype.ScriptFragment, 'img'), '');
@@ -157,11 +177,62 @@ Object.extend(String.prototype, (function() {
   /**
    *  String#evalScripts() -> Array
    *
-   *  Evaluates the content of any script block present in the string.
+   *  Evaluates the content of any inline `<script>` block present in the string.
    *  Returns an array containing the value returned by each script.
+   *  `<script>`  blocks referencing external files will be treated as though
+   *  they were empty (the result for that position in the array will be `undefined`);
+   *  external files are _not_ loaded and processed by `evalScripts`.
+   *
+   *  <h5>About `evalScripts`, `var`s, and defining functions</h5>
+   *
+   *  `evalScripts` evaluates script blocks, but this **does not** mean they are
+   *  evaluated in the global scope. They aren't, they're evaluated in the scope of
+   *  the `evalScripts` method. This has important ramifications for your scripts:
+   *
+   *  * Anything in your script declared with the `var` keyword will be
+   *    discarded momentarily after evaluation, and will be invisible to any
+   *    other scope.
+   *  * If any `<script>` blocks _define functions_, they will need to be assigned to
+   *    properties of the `window` object.
+   *
+   *  For example, this won't work:
+   *
+   *      // This kind of script won't work if processed by evalScripts:
+   *      function coolFunc() {
+   *        // Amazing stuff!
+   *      }
+   *
+   *  Instead, use the following syntax:
+   *
+   *      // This kind of script WILL work if processed by evalScripts:
+   *      window.coolFunc = function() {
+   *        // Amazing stuff!
+   *      }
+   *
+   *  (You can leave off the `window.` part of that, but it's bad form.)
   **/
   function evalScripts() {
     return this.extractScripts().map(function(script) { return eval(script) });
+  }
+
+  /**
+   *  String#escapeHTML() -> String
+   *
+   *  Converts HTML special characters to their entity equivalents.
+  **/
+  function escapeHTML() {
+    return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  /** related to: String#escapeHTML
+   *  String#unescapeHTML() -> String
+   *
+   *  Strips tags and converts the entity forms of special HTML characters
+   *  to their normal form.
+  **/
+  function unescapeHTML() {
+    // Warning: In 1.7 String#unescapeHTML will no longer call String#stripTags.
+    return this.stripTags().replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
   }
 
   /**
@@ -230,12 +301,12 @@ Object.extend(String.prototype, (function() {
    *
    *  Converts a string separated by dashes into a camelCase equivalent.
    *  For instance, 'foo-bar' would be converted to 'fooBar'.
-   *  
-   *  <h4>Examples</h4>
-   *  
+   *
+   *  <h5>Examples</h5>
+   *
    *      'background-color'.camelize();
    *      // -> 'backgroundColor'
-   *      
+   *
    *      '-moz-binding'.camelize();
    *      // -> 'MozBinding'
   **/
@@ -443,21 +514,3 @@ Object.extend(String.prototype, (function() {
   };
 })());
 
-/**
-*  String#escapeHTML() -> String
-*
-*  Converts HTML special characters to their entity equivalents.
-**/
-String.prototype.escapeHTML = function() {
-  return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-};
-
-/** related to: String#escapeHTML
-*  String#unescapeHTML() -> String
-*
-*  Strips tags and converts the entity forms of special HTML characters
-*  to their normal form.
-**/
-String.prototype.unescapeHTML = function() {
-  return this.stripTags().replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
-};

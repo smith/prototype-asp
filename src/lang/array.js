@@ -37,14 +37,14 @@ Array.from = $A;
 
 /** section: Language
  * class Array
+ *  includes Enumerable
  *
  *  Prototype extends all native JavaScript arrays with quite a few powerful
  *  methods.
  *
  *  This is done in two ways:
  *
- *  * It mixes in the [[Enumerable]] module, which brings a ton of methods in
- *    already.
+ *  * It mixes in the [[Enumerable]] module, which brings in a ton of methods.
  *  * It adds quite a few extra methods, which are documented in this section.
  *
  *  With Prototype, arrays become much, much more than the trivial objects we
@@ -52,7 +52,7 @@ Array.from = $A;
  *  their `[]` indexing operator. They become very powerful objects that
  *  greatly simplify the code for 99% of the common use cases involving them.
  *
- *  <h4>Why you should stop using for...in to iterate</h4>
+ *  <h5>Why you should stop using for...in to iterate</h5>
  *
  *  Many JavaScript authors have been misled into using the `for...in` JavaScript
  *  construct to loop over array elements. This kind of code just won't work
@@ -77,7 +77,7 @@ Array.from = $A;
  *  those coming from the [[Enumerable]] module, and those Prototype puts in the
  *  Array namespace (listed further below).
  *
- *  <h4>What you should use instead</h4>
+ *  <h5>What you should use instead</h5>
  *
  *  You can revert to vanilla loops:
  *
@@ -99,7 +99,7 @@ Array.from = $A;
  *  module. So manual loops should be fairly rare.
  *
  *
- *  <h4>A note on performance</h4>
+ *  <h5>A note on performance</h5>
  *
  *  Should you have a very large array, using iterators with lexical closures
  *  (anonymous functions that you pass to the iterators and that get invoked at
@@ -131,7 +131,16 @@ Array.from = $A;
 
   /**
    *  Array#clear() -> Array
-   *  Empties an array.
+   *
+   *  Clears the array (makes it empty) and returns the array reference.
+   *
+   *  <h5>Example</h5>
+   *
+   *      var guys = ['Sam', 'Justin', 'Andrew', 'Dan'];
+   *      guys.clear();
+   *      // -> []
+   *      guys
+   *      // -> []
   **/
   function clear() {
     this.length = 0;
@@ -140,7 +149,8 @@ Array.from = $A;
 
   /**
    *  Array#first() -> ?
-   *  Returns the array's first item.
+   *
+   *  Returns the array's first item (e.g., `array[0]`).
   **/
   function first() {
     return this[0];
@@ -148,7 +158,8 @@ Array.from = $A;
 
   /**
    *  Array#last() -> ?
-   *  Returns the array's last item.
+   *
+   *  Returns the array's last item (e.g., `array[array.length - 1]`).
   **/
   function last() {
     return this[this.length - 1];
@@ -156,7 +167,15 @@ Array.from = $A;
 
   /**
    *  Array#compact() -> Array
-   *  Trims the array of `null`, `undefined`, or other "falsy" values.
+   *
+   *  Returns a **copy** of the array without any `null` or `undefined` values.
+   *
+   *  <h5>Example</h5>
+   *
+   *      var orig = [undefined, 'A', undefined, 'B', null, 'C'];
+   *      var copy = orig.compact();
+   *      // orig -> [undefined, 'A', undefined, 'B', null, 'C'];
+   *      // copy -> ['A', 'B', 'C'];
   **/
   function compact() {
     return this.select(function(value) {
@@ -166,11 +185,20 @@ Array.from = $A;
 
   /**
    *  Array#flatten() -> Array
-   *  Returns a "flat" (one-dimensional) version of the array.
    *
-   *  Nested arrays are recursively injected "inline." This can prove very
+   *  Returns a flattened (one-dimensional) copy of the array, leaving
+   *  the original array unchanged.
+   *
+   *  Nested arrays are recursively injected inline. This can prove very
    *  useful when handling the results of a recursive collection algorithm,
    *  for instance.
+   *
+   *  <h5>Example</h5>
+   *
+   *      var a = ['frank', ['bob', 'lisa'], ['jill', ['tom', 'sally']]];
+   *      var b = a.flatten();
+   *      // a -> ['frank', ['bob', 'lisa'], ['jill', ['tom', 'sally']]]
+   *      // b -> ['frank', 'bob', 'lisa', 'jill', 'tom', 'sally']
   **/
   function flatten() {
     return this.inject([], function(array, value) {
@@ -182,11 +210,19 @@ Array.from = $A;
   }
 
   /**
-   *  Array#without(value...) -> Array
+   *  Array#without(value[, value...]) -> Array
    *  - value (?): A value to exclude.
    *
    *  Produces a new version of the array that does not contain any of the
-   *  specified values.
+   *  specified values, leaving the original array unchanged.
+   *
+   *  <h5>Examples</h5>
+   *
+   *      [3, 5, 6].without(3)
+   *      // -> [5, 6]
+   *
+   *      [3, 5, 6, 20].without(20, 6)
+   *      // -> [3, 5]
   **/
   function without() {
     var values = slice.call(arguments, 0);
@@ -196,14 +232,27 @@ Array.from = $A;
   }
 
   /**
-   *  Array#reverse([inline = false]) -> Array
-   *  - inline (Boolean): Whether to modify the array in place. If `false`,
-   *      clones the original array first.
+   *  Array#reverse([inline = true]) -> Array
+   *  - inline (Boolean): Whether to modify the array in place. Defaults to `true`.
+   *      Clones the original array when `false`.
    *
-   *  Returns the reversed version of the array.
+   *  Reverses the array's contents, optionally cloning it first.
+   *
+   *  <h5>Examples</h5>
+   *
+   *      // Making a copy
+   *      var nums = [3, 5, 6, 1, 20];
+   *      var rev = nums.reverse(false);
+   *      // nums -> [3, 5, 6, 1, 20]
+   *      // rev -> [20, 1, 6, 5, 3]
+   *
+   *      // Working inline
+   *      var nums = [3, 5, 6, 1, 20];
+   *      nums.reverse();
+   *      // nums -> [20, 1, 6, 5, 3]
   **/
   function reverse(inline) {
-    return (inline !== false ? this : this.toArray())._reverse();
+    return (inline === false ? this.toArray() : this)._reverse();
   }
 
   /**
@@ -213,6 +262,17 @@ Array.from = $A;
    *
    *  Produces a duplicate-free version of an array. If no duplicates are
    *  found, the original array is returned.
+   *
+   *  On large arrays when `sorted` is `false`, this method has a potentially
+   *  large performance cost.
+   *
+   *  <h5>Examples</h5>
+   *
+   *      [1, 3, 2, 1].uniq();
+   *      // -> [1, 2, 3]
+   *
+   *      ['A', 'a'].uniq();
+   *      // -> ['A', 'a'] (because String comparison is case-sensitive)
   **/
   function uniq(sorted) {
     return this.inject([], function(array, value, index) {
@@ -250,7 +310,8 @@ Array.from = $A;
 
   /** related to: Enumerable#size
    *  Array#size() -> Number
-   *  Returns the size of the array.
+   *
+   *  Returns the size of the array (e.g., `array.length`).
    *
    *  This is just a local optimization of the mixed-in [[Enumerable#size]]
    *  which avoids array cloning and uses the array's native length property.
@@ -263,6 +324,11 @@ Array.from = $A;
    *  Array#inspect() -> String
    *
    *  Returns the debug-oriented string representation of an array.
+   *
+   *  <h5>Example</h5>
+   *
+   *      ['Apples', {good: 'yes', bad: 'no'}, 3, 34].inspect()
+   *      // -> "['Apples', [object Object], 3, 34]"
   **/
   function inspect() {
     return '[' + this.map(Object.inspect).join(', ') + ']';
@@ -272,6 +338,11 @@ Array.from = $A;
    *  Array#toJSON() -> String
    *
    *  Returns a JSON string representation of the array.
+   *
+   *  <h5>Example</h5>
+   *
+   *      ['a', {b: null}].toJSON();
+   *      //-> '["a", {"b": null}]'
   **/
   function toJSON() {
     var results = [];
@@ -285,11 +356,23 @@ Array.from = $A;
   /**
    *  Array#indexOf(item[, offset = 0]) -> Number
    *  - item (?): A value that may or may not be in the array.
-   *  - offset (Number): The number of initial items to skip before beginning the
-   *      search.
+   *  - offset (Number): The number of initial items to skip before beginning
+   *      the search.
    *
-   *  Returns the position of the first occurrence of `item` within the array &mdash; or
-   *  `-1` if `item` doesn't exist in the array.
+   *  Returns the index of the first occurrence of `item` within the array,
+   *  or `-1` if `item` doesn't exist in the array. `Array#indexOf` compares
+   *  items using *strict equality* (`===`).
+   *
+   *  <h5>Examples</h5>
+   *
+   *      [3, 5, 6, 1, 20].indexOf(1)
+   *      // -> 3
+   *
+   *      [3, 5, 6, 1, 20].indexOf(90)
+   *      // -> -1 (not found)
+   *
+   *      ['1', '2', '3'].indexOf(1);
+   *      // -> -1 (not found, 1 !== '1')
   **/
   function indexOf(item, i) {
     i || (i = 0);
