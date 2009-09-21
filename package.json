@@ -1,0 +1,10 @@
+{
+    "name" : "prototype",
+    "author" : "Sam Stephenson",
+    "maintainer" : "Nathan L Smith (http://nlsmith.com/) <nlloyds@gmail.com>",
+    "url" : "http://github.com/smith/prototype-asp/tree/narwhal-global",
+    "license" : "MIT",
+    "description" : "Prototype is a JavaScript Framework that aims to ease development of dynamic web applications.",
+    "keywords" : ["prototype", "framework", "library", "language", "extension"]
+}
+
