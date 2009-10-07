@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testObjectExtend: function() {
     var object = {foo: 'foo', bar: [1, 2, 3]};
     this.assertIdentical(object, Object.extend(object));
@@ -30,7 +30,6 @@ new Test.Unit.Runner({
     this.assertEqual('null', Object.inspect(null));
     this.assertEqual("'foo\\\\b\\\'ar'", Object.inspect('foo\\b\'ar'));
     this.assertEqual('[]', Object.inspect([]));
-    this.assertNothingRaised(function() { Object.inspect(window.Node) });
   },
 
   testObjectToJSON: function() {
@@ -54,10 +53,6 @@ new Test.Unit.Runner({
     var sam = new Person('sam');
     this.assertEqual('-sam', Object.toJSON(sam));
     this.assertEqual('-sam', sam.toJSON());
-    var element = $('test');
-    this.assertUndefined(Object.toJSON(element));
-    element.toJSON = function(){return 'I\'m a div with id test'};
-    this.assertEqual('I\'m a div with id test', Object.toJSON(element));
   },
 
   testObjectToHTML: function() {
@@ -75,7 +70,6 @@ new Test.Unit.Runner({
     this.assert(Object.isArray([0]));
     this.assert(Object.isArray([0, 1]));
     this.assert(!Object.isArray({}));
-    this.assert(!Object.isArray($('list').childNodes));
     this.assert(!Object.isArray());
     this.assert(!Object.isArray(''));
     this.assert(!Object.isArray('foo'));
@@ -100,25 +94,10 @@ new Test.Unit.Runner({
     this.assert(!Object.isHash([]));
   },
 
-  testObjectIsElement: function() {
-    this.assert(Object.isElement(document.createElement('div')));
-    this.assert(Object.isElement(new Element('div')));
-    this.assert(Object.isElement($('testlog')));
-    this.assert(!Object.isElement(document.createTextNode('bla')));
-
-    // falsy variables should not mess up return value type
-    this.assertIdentical(false, Object.isElement(0));
-    this.assertIdentical(false, Object.isElement(''));
-    this.assertIdentical(false, Object.isElement(NaN));
-    this.assertIdentical(false, Object.isElement(null));
-    this.assertIdentical(false, Object.isElement(undefined));
-  },
-
   testObjectIsFunction: function() {
     this.assert(Object.isFunction(function() { }));
     this.assert(Object.isFunction(Class.create()));
     this.assert(!Object.isFunction("a string"));
-    this.assert(!Object.isFunction($("testlog")));
     this.assert(!Object.isFunction([]));
     this.assert(!Object.isFunction({}));
     this.assert(!Object.isFunction(0));
@@ -135,7 +114,6 @@ new Test.Unit.Runner({
     this.assert(!Object.isString({}));
     this.assert(!Object.isString(false));
     this.assert(!Object.isString(undefined));
-    this.assert(!Object.isString(document), 'host objects should return false rather than throw exceptions');
   },
 
   testObjectIsNumber: function() {
@@ -150,7 +128,6 @@ new Test.Unit.Runner({
     this.assert(!Object.isNumber({}));
     this.assert(!Object.isNumber(false));
     this.assert(!Object.isNumber(undefined));
-    this.assert(!Object.isNumber(document), 'host objects should return false rather than throw exceptions');
   },
 
   testObjectIsUndefined: function() {

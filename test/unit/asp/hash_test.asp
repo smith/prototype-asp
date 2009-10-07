@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/unittest.css" type="text/css" />
   
   <script src="fixtures/hash.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
-  <script src="tests/hash_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
+  <script src="../hash_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
 </head>
 <body>
 

@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testClassCreate: function() {
     this.assert(Object.isFunction(Animal), 'Animal is not a constructor');
     this.assertEnumEqual([Cat, Mouse, Dog, Ox], Animal.subclasses);

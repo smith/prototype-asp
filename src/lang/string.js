@@ -491,6 +491,8 @@ Object.extend(String.prototype, (function() {
     stripScripts:   stripScripts,
     extractScripts: extractScripts,
     evalScripts:    evalScripts,
+    escapeHTML:     escapeHTML,
+    unescapeHTML:   unescapeHTML,
     toQueryParams:  toQueryParams,
     parseQuery:     toQueryParams,
     toArray:        toArray,

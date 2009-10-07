@@ -1,4 +1,4 @@
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   testFunctionArgumentNames: function() {
     this.assertEnumEqual([], (function() {}).argumentNames());
     this.assertEnumEqual(["one"], (function(one) {}).argumentNames());
@@ -54,19 +54,6 @@ new Test.Unit.Runner({
     this.assertIdentical(split, split.curry());
   },
 
-  testFunctionDelay: function() {
-    window.delayed = undefined;
-    var delayedFunction = function() { window.delayed = true; };
-    var delayedFunctionWithArgs = function() { window.delayedWithArgs = $A(arguments).join(' '); };
-    delayedFunction.delay(0.8);
-    delayedFunctionWithArgs.delay(0.8, 'hello', 'world');
-    this.assertUndefined(window.delayed);
-    this.wait(1000, function() {
-      this.assert(window.delayed);
-      this.assertEqual('hello world', window.delayedWithArgs);
-    });
-  },
-
   testFunctionWrap: function() {
     function sayHello(){
       return 'hello world';
@@ -89,23 +76,6 @@ new Test.Unit.Runner({
     String.prototype.capitalize = temp;
   },
 
-  testFunctionDefer: function() {
-    window.deferred = undefined;
-    var deferredFunction = function() { window.deferred = true; };
-    deferredFunction.defer();
-    this.assertUndefined(window.deferred);
-    this.wait(50, function() {
-      this.assert(window.deferred);
-
-      window.deferredValue = 0;
-      var deferredFunction2 = function(arg) { window.deferredValue = arg; };
-      deferredFunction2.defer('test');
-      this.wait(50, function() {
-        this.assertEqual('test', window.deferredValue);
-      });
-    });
-  },
-
   testFunctionMethodize: function() {
     var Foo = { bar: function(baz) { return baz } };
     var baz = { quux: Foo.bar.methodize() };
@@ -113,21 +83,5 @@ new Test.Unit.Runner({
     this.assertEqual(Foo.bar.methodize(), baz.quux);
     this.assertEqual(baz, Foo.bar(baz));
     this.assertEqual(baz, baz.quux());
-  },
-
-  testBindAsEventListener: function() {
-    for( var i = 0; i < 10; ++i ){
-      var div = document.createElement('div');
-      div.setAttribute('id','test-'+i);
-      document.body.appendChild(div);
-      var tobj = new TestObj();
-      var eventTest = { test: true };
-      var call = tobj.assertingEventHandler.bindAsEventListener(tobj,
-        this.assertEqual.bind(this, eventTest),
-        this.assertEqual.bind(this, arg1),
-        this.assertEqual.bind(this, arg2),
-        this.assertEqual.bind(this, arg3), arg1, arg2, arg3 );
-      call(eventTest);
-    }
   }
 });

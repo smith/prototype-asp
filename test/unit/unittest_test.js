@@ -7,18 +7,7 @@ var testObj = {
   }
 }
 
-new Test.Unit.Runner({
-  
-  testIsRunningFromRake:  function() {
-    if (window.location.toString().startsWith('http')) {
-      this.assert(this.isRunningFromRake);
-      this.info('These tests are running from rake.')
-    } else {
-      this.assert(!this.isRunningFromRake);
-      this.info('These tests are *not* running from rake.')
-    }
-  },
-
+var testResults = new Test.Unit.Runner({
   testBuildMessage:  function() {
     this.assertEqual("'foo' 'bar'", this.buildMessage('', '? ?', 'foo', 'bar'))
   },
@@ -111,38 +100,11 @@ new Test.Unit.Runner({
     this.assertInstanceOf(String, new String);
     this.assertInstanceOf(RegExp, /foo/);
     this.assertNotInstanceOf(String, {});
-  },
-  
-  testAssertVisible: function() {
-    this.assertVisible('testcss1');
-    this.assertNotVisible('testcss1_span');
-    //this.assertNotVisible('testcss2', "Due to a Safari bug, this test fails in Safari.");
-    
-    Element.hide('testcss1');
-    this.assertNotVisible('testcss1');
-    this.assertNotVisible('testcss1_span');
-    Element.show('testcss1');
-    this.assertVisible('testcss1');
-    this.assertNotVisible('testcss1_span');
-    
-    Element.show('testcss1_span');
-    this.assertVisible('testcss1_span');
-    Element.hide('testcss1');
-    this.assertNotVisible('testcss1_span'); // hidden by parent
-  },
-
-  testAssertElementsMatch: function() {
-    this.assertElementsMatch($$('#tlist'), '#tlist');   
-    this.assertElementMatches($('tlist'), '#tlist');   
   }
 });
 
-new Test.Unit.Runner({
+var testResults2 = new Test.Unit.Runner({
   testDummy: function() {
     this.assert(true);
-  },
-  
-  testMultipleTestRunner: function() {
-    this.assertEqual('passed', $('testlog_2').down('td', 1).innerHTML);
   }
 }, {testLog: 'testlog_2'});

@@ -1,6 +1,6 @@
 var globalArgsTest = 'nothing to see here';
 
-new Test.Unit.Runner({
+var testResults = new Test.Unit.Runner({
   test$A: function(){
     this.assertEnumEqual([], $A({}));
   },
@@ -15,22 +15,6 @@ new Test.Unit.Runner({
     this.assertEnumEqual(['foo'], globalArgsTest);
     toArrayOnArguments('foo','bar');
     this.assertEnumEqual(['foo','bar'], globalArgsTest);
-  },
-  
-  testToArrayOnNodeList: function(){
-    // direct HTML
-    this.assertEqual(3, $A($('test_node').childNodes).length);
-    
-    // DOM
-    var element = document.createElement('div');
-    element.appendChild(document.createTextNode('22'));
-    (2).times(function(){ element.appendChild(document.createElement('span')) });
-    this.assertEqual(3, $A(element.childNodes).length);
-    
-    // HTML String
-    element = document.createElement('div');
-    $(element).update('22<span></span><span></span');
-    this.assertEqual(3, $A(element.childNodes).length);
   },
   
   testToArrayOnPrimitive: function() {

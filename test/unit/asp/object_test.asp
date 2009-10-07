@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/unittest.css" type="text/css" />
   
   <script src="fixtures/object.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
-  <script src="tests/object_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
+  <script src="../object_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
 </head>
 <body>
 

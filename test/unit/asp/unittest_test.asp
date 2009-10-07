@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/unittest.css" type="text/css" />
   
   
-  <script src="tests/unittest_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
+  <script src="../unittest_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
 </head>
 <body>
 

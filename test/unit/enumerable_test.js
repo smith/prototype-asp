@@ -4,7 +4,7 @@ function prime(value) {
   return true;
 }
 
-new Test.Unit.Runner({    
+var testResults = new Test.Unit.Runner({
   testEachBreak: function() {
     var result = 0;
     Fixtures.Basic.each(function(value) {
@@ -133,9 +133,6 @@ new Test.Unit.Runner({
       Fixtures.Nicknames.grep(/o/, function(nickname) {
         return nickname.toUpperCase();
       }).join(", "))
-
-    this.assertEnumEqual($('grepHeader', 'grepCell'),
-      $('grepTable', 'grepTBody', 'grepRow', 'grepHeader', 'grepCell').grep(new Selector('.cell')));
 
     // troublesome characters
     this.assertEnumEqual(['?a', 'c?'], ['?a','b','c?'].grep('?'));

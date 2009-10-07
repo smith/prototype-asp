@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/unittest.css" type="text/css" />
   
   <script src="fixtures/enumerable.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
-  <script src="tests/enumerable_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
+  <script src="../enumerable_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
 </head>
 <body>
 

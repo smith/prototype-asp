@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="assets/unittest.css" type="text/css" />
   
   <script src="fixtures/string.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
-  <script src="tests/string_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
+  <script src="../string_test.js" type="text/javascript" charset="utf-8" language="javascript" runat="server"></script>
 </head>
 <body>
 
