@@ -24,7 +24,7 @@ Object.extend(Function.prototype, (function() {
    *  the values as an array of strings (or an empty array if the function is
    *  defined without parameters).
    *
-   *  <h5>Examples</h5>
+   *  ##### Examples
    *
    *      function fn(foo, bar) {
    *        return foo + bar;
@@ -52,9 +52,9 @@ Object.extend(Function.prototype, (function() {
    *  function is called, it will call the original ensuring that `this` is set
    *  to `context`. Also optionally curries arguments for the function.
    *
-   *  <h5>Examples</h5>
+   *  ##### Examples
    *
-   *  A typical use of `Function#bind` is to ensure that a callback (event
+   *  A typical use of [[Function#bind]] is to ensure that a callback (event
    *  handler, etc.) that is an object method gets called with the correct
    *  object as its context (`this` value):
    *
@@ -132,7 +132,7 @@ Object.extend(Function.prototype, (function() {
    *      f('a', 'b');
    *      // -> alerts "1, 2, 3, a, b"
    *
-   *  `Function#curry` works just like [[Function#bind]] without the initial
+   *  [[Function#curry]] works just like [[Function#bind]] without the initial
    *  context argument. Use `bind` if you need to curry arguments _and_ set
    *  context at the same time.
    *
@@ -148,12 +148,12 @@ Object.extend(Function.prototype, (function() {
   }
 
   /**
-   *  Function#wrap(wrapperFunction) -> Function
-   *  - wrapperFunction (Function): The function to act as a wrapper.
+   *  Function#wrap(wrapper) -> Function
+   *  - wrapper (Function): The function to use as a wrapper.
    *
    *  Returns a function "wrapped" around the original function.
    *
-   *  `Function#wrap` distills the essence of aspect-oriented programming into
+   *  [[Function#wrap]] distills the essence of aspect-oriented programming into
    *  a single method, letting you easily build on existing functions by
    *  specifying before and after behavior, transforming the return value, or
    *  even preventing the original function from being called.
@@ -168,7 +168,7 @@ Object.extend(Function.prototype, (function() {
    *  indirection in-between that sets up the proper context \[`this` value\] for
    *  it.)
    *
-   *  <h5>Example</h5>
+   *  ##### Example
    *
    *      // Wrap String#capitalize so it accepts an additional argument
    *      String.prototype.capitalize = String.prototype.capitalize.wrap(
@@ -208,7 +208,7 @@ Object.extend(Function.prototype, (function() {
    *  want to transform a function that takes an object to a method of that
    *  object or its prototype, shortening its signature by one argument.
    *
-   *  <h5>Example</h5>
+   *  ##### Example
    *
    *      // A function that sets a name on a target object
    *      function setName(target, name) {
