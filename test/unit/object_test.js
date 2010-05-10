@@ -65,7 +65,6 @@ var testResults = new Test.Unit.Runner({
     this.assertEqual('null', Object.toJSON(null));
     var sam = new Person('sam');
     this.assertEqual('-sam', Object.toJSON(sam));
-    this.assertEqual('-sam', sam.toJSON());
   },
 
   testObjectToHTML: function() {
