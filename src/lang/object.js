@@ -32,7 +32,7 @@
       NUMBER_CLASS = '[object Number]',
       STRING_CLASS = '[object String]',
       ARRAY_CLASS = '[object Array]',
-      NATIVE_JSON_STRINGIFY_SUPPORT = window.JSON &&
+      NATIVE_JSON_STRINGIFY_SUPPORT = typeof JSON === "object" &&
         typeof JSON.stringify === 'function' &&
         JSON.stringify(0) === '0' &&
         typeof JSON.stringify(Prototype.K) === 'undefined';

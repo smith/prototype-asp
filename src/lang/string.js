@@ -29,7 +29,7 @@ Object.extend(String, {
 });
 
 Object.extend(String.prototype, (function() {
-  var NATIVE_JSON_PARSE_SUPPORT = window.JSON &&
+  var NATIVE_JSON_PARSE_SUPPORT = typeof JSON === "object" &&
     typeof JSON.parse === 'function' &&
     JSON.parse('{"test": true}').test;
 
